@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "975540639868",
+    "project_id": "smartfood-485be",
+    "storage_bucket": "smartfood-485be.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:975540639868:android:f19a1bda9b65e10d4311f9",
+        "android_client_info": {
+          "package_name": "com.example.smartrestaurant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "975540639868-amjqjo6tfo3eblldhmnqljoial59i6ge.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.smartrestaurant",
+            "certificate_hash": "6c81e4a2aaa8f5a3d27b9300425ee537461ac86f"
+          }
+        },
+        {
+          "client_id": "975540639868-on44gpcgn5crhuio1jb5hhascvb42qer.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJKXJ4ZJDheP6OTp1YWHx1TMPp_4Fq4DQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "975540639868-on44gpcgn5crhuio1jb5hhascvb42qer.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
