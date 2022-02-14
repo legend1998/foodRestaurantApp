@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:smartrestaurant/HomePageScreen.dart';
+import 'package:smartrestaurant/App.dart';
 import 'package:smartrestaurant/LoginScreen.dart';
 import 'package:smartrestaurant/Permission.dart';
 import 'package:smartrestaurant/services/Service.dart';
@@ -38,10 +37,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
   loadUser() async {
     var id = await Service.getuserId();
-
+    print(id);
     if (id != null) {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomePageScreen()));
+          context, MaterialPageRoute(builder: (context) => MainApp()));
       return;
     } else {
       Navigator.pushReplacement(
@@ -53,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Colors.grey[100],
       child: Center(
         child: Image.asset("images/logo.png"),
       ),

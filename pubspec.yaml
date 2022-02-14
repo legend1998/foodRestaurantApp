@@ -36,7 +36,6 @@ dependencies:
   firebase_core: ^1.1.1
   firebase_auth: ^1.1.4
   hive_flutter: ^1.0.0
-
   hive: ^2.0.4
   google_sign_in: ^5.0.3
   otp_text_field: ^1.1.0

@@ -11,7 +11,6 @@ class Service {
       var box = await Hive.openBox('testBox');
 
       CollectionReference users = firestore.collection("user");
-      CollectionReference useractivity = firestore.collection("userActivity");
 
       QuerySnapshot result;
 
@@ -29,23 +28,13 @@ class Service {
             id: uid);
 
         await users.doc(uid).set(appuser.userAsMap());
-        await useractivity.doc(uid).set({
-          "activity": [],
-          "coins": [
-            {
-              "messsage": "sign in coins",
-              "coins": 1000,
-              "time": new DateTime.now().toString()
-            }
-          ]
-        });
+
         var userid = (await users.doc(uid).get()).id;
         box.put('userid', userid);
 
         return "new";
       } else {
         print(user.phoneNumber);
-
         var doc = result.docs[0];
         print(doc.id);
         await box.put('userid', doc.id);
@@ -64,12 +53,33 @@ class Service {
     return userid;
   }
 
+  static Future<dynamic> getRestaurantId({String? mobile}) async {
+    var box = await Hive.openBox('testBox');
+    var restId = (await box.get('restId')) ?? null;
+    print("THIS IS REST ID");
+    print(restId);
+    if (restId == null) {
+      var tempRest = await FirebaseFirestore.instance
+          .collection("restaurant")
+          .where("mobile", isEqualTo: mobile)
+          .limit(1)
+          .get()
+          .then((value) => value.docs[0].id);
+      box.put("restId", tempRest);
+      box.close();
+    } else {
+      return restId;
+    }
+  }
+
   static Future<AppUser> getuser() async {
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
       CollectionReference users = firestore.collection("user");
       var box = await Hive.openBox('testBox');
       var userid = await box.get('userid');
+      print("THIS IS USERID");
+      print(userid);
       Map<String, dynamic> data = await users
           .doc(userid)
           .get()

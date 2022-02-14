@@ -1,6 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:smartrestaurant/services/fun.dart';
+import 'package:smartrestaurant/LoginScreen.dart';
+import 'package:smartrestaurant/services/Service.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -10,38 +12,57 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  int _selectedIndexForBottomNavigationBar = 3;
-  void _onItemTappedForBottomNavigationBar(index) {
-    if (index != 3) onItemTappedForBottomNavigationBar(index, context);
+  var _rest;
+  bool loading = true;
+  void loadData() async {
+    String restId = await Service.getRestaurantId();
+    _rest = await FirebaseFirestore.instance
+        .collection("restaurant")
+        .doc(restId)
+        .get()
+        .then((value) => {...?value.data(), "id": value.id});
+    this.setState(() {
+      loading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    loadData();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        iconSize: 20,
-        unselectedFontSize: 10,
-        selectedFontSize: 12,
-
-        type: BottomNavigationBarType.fixed,
-        onTap: (value) {
-          _onItemTappedForBottomNavigationBar(value);
-        }, // this will be set when a new tab is tapped
-        items: [
-          BottomNavigationBarItem(icon: new Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(
-              icon: new Icon(Icons.search), label: "Search"),
-          BottomNavigationBarItem(
-              icon: new Icon(Icons.shopping_basket), label: "Cart"),
-          BottomNavigationBarItem(
-              icon: new Icon(Icons.person), label: "Profile"),
-        ],
-        currentIndex: _selectedIndexForBottomNavigationBar,
-      ),
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(),
-        ),
+      body: SafeArea(
+        child: loading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Column(
+                children: [
+                  Container(
+                      height: 300,
+                      color: Colors.red,
+                      width: MediaQuery.of(context).size.width,
+                      child: CachedNetworkImage(
+                        imageUrl: _rest["imageUrl"],
+                      )),
+                  ListTile(
+                    leading: Icon(Icons.exit_to_app),
+                    onTap: () {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()),
+                          (route) => false);
+                    },
+                    subtitle: Text("log out from this app"),
+                    title: Text("Log Out"),
+                  ),
+                ],
+              ),
       ),
     );
   }
